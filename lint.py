@@ -123,7 +123,7 @@ class ActionModule(ActionBase):
 
     args = self._task.args
 
-    for name, arg in self.MODULE_ARGS.iteritems():
+    for name, arg in self.MODULE_ARGS.items():
       if arg['required'] and name not in args:
         return {
           'failed': True,
