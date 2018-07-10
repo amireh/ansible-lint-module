@@ -12,7 +12,6 @@ configparser==3.5.0
 coverage==4.5.1
 cryptography==2.2.2
 enum34==1.1.6
-futures==3.2.0
 idna==2.7
 ipaddress==1.0.22
 isort==4.3.4
