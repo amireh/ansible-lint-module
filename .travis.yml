@@ -1,8 +1,11 @@
 language: python
+
 python:
   - "2.7"
   - "3.6"
 
+cache: pip
+
 script:
-  - bin/lint
-  - bin/test
+  - pylint lint.py
+  - python -m pytest test/
