@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$(type -p pylint pylint-2) lint.py
