@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ANSIBLE_CONFIG=test/integration/ansible.cfg \
+ansible-playbook test/integration/playbook.yml "$@"

@@ -57,7 +57,7 @@ confidence=
 disable=apply-builtin,
         bad-whitespace,
         import-error,
-        ; invalid-name,
+        line-too-long,
         missing-docstring,
         no-self-use,
         no-else-return,

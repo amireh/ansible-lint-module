@@ -1,0 +1,7 @@
+- hosts: localhost
+  tasks:
+    - lint:
+        rules:
+          - deprecated:
+              path: foo
+              msg: "use 'bar' instead of 'foo'!"

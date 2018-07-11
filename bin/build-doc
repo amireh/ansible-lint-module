@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#
+# shellcheck disable=SC1091
+
+build() {
+  mimic-setup &&
+  rm -rf /mnt/src/docs &&
+  cp /mnt/src/library/lint.py /usr/local/ansible/lib/ansible/modules/utilities/logic/ &&
+  cp /mnt/src/library/action_plugins/lint.py /usr/local/ansible/lib/ansible/plugins/action/ &&
+  cd /usr/local/ansible &&
+  . hacking/env-setup 1>/dev/null &&
+  cd docs/docsite &&
+  make clean &>/dev/null &&
+  CPUS=4 MODULES=lint PLUGINS=none DOC_PLUGINS=none make modules &&
+  CPUS=4 MODULES=lint PLUGINS=none DOC_PLUGINS=none make htmlsingle rst=modules/lint_module.rst &&
+  cp -r _build/html /mnt/src/docs &&
+  chown -R donkey:donkey /mnt/src/docs
+}
+
+bin/shell -c "$(declare -f build) && build"
