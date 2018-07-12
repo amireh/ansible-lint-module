@@ -18,4 +18,5 @@ build() {
 }
 
 bin/shell -c "$(declare -f build) && build" &&
+touch docs/.nojekyll &&
 find docs -name '_*' -type d -exec touch {}/.nojekyll \;
