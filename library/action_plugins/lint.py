@@ -8,8 +8,11 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type # pylint: disable=invalid-name
 
 from ansible.plugins.action import ActionBase
+from ansible.module_utils.basic import AnsibleModule
 from ansible.playbook.conditional import Conditional
+from ansible.module_utils._text import to_native, to_text
 from ansible import constants as C
+from ansible.errors import AnsibleOptionsError
 
 try:
   from __main__ import display
@@ -17,90 +20,257 @@ except ImportError:
   from ansible.utils.display import Display # pylint: disable=ungrouped-imports
   display = Display()
 
-
-ALWAYS = lambda x: True
-
+# pylint: disable=too-few-public-methods
 class ActionModule(ActionBase):
   TRANSFERS_FILES = False
-  MODULE_ARGS = dict(
-    rules = dict(type='list', required=True)
-  )
+  RULE_SPECS = {
+    'deprecated': {
+      'banner': u'The following variables have been deprecated:',
+      'banner_color': C.COLOR_WARN,
+      'ignore_errors': True,
+    },
 
-  def report(self, banner, msg, items):
-    display.display('[{0}] {1}\n'.format(banner, msg), color=C.COLOR_WARN)
+    'required': {
+      'banner': u'The following variables are required but missing:',
+      'banner_color': C.COLOR_ERROR,
+      'ignore_errors': False,
+    },
 
-    for item in items:
-      display.display('- {0}'.format(item['path']), color=C.COLOR_HIGHLIGHT)
-
-    display.display('\n')
-
-  def deprecated(self, rule_args, task_vars):
-    def evaluate_conditional(item):
-      cond_vars['item'] = item
-
-      return cond.evaluate_conditional(
-        templar=self._templar,
-        all_vars=cond_vars
-      )
-
-    scope = over(path=rule_args['path'].split('.'), value=task_vars)
-
-    defined = [x for x in scope if x is not None]
-
-    selector = ALWAYS
-
-    if 'when' in rule_args:
-      cond = Conditional(loader=self._loader)
-      cond.when = [rule_args['when']]
-      cond_vars = task_vars.copy()
-
-      selector = evaluate_conditional
-
-    filtered = [x for x in defined if selector(x['value'])]
-
-    if filtered:
-      self.report(
-        banner='DEPRECATION NOTICE',
-        msg=rule_args['msg'],
-        items=filtered
-      )
-
-    return filtered
+    'invalid': {
+      'banner': u'The following variables have an invalid value:',
+      'banner_color': C.COLOR_ERROR,
+      'ignore_errors': False,
+    },
+  }
 
   def run(self, tmp=None, task_vars=None):
     if task_vars is None:
       task_vars = dict()
 
-    args = self._task.args
-
-    for name, arg in self.MODULE_ARGS.items():
-      if arg['required'] and name not in args:
-        return {
-          'failed': True,
-          'msg': '{0} is a required argument of lint'.format(name)
-        }
-
-    result = super(ActionModule, self).run(tmp, task_vars)
-    result['issues'] = []
-    result['inspected'] = 0
-    result['deprecated'] = []
-
-    del tmp  # tmp no longer has any effect
-
-    for rule in args['rules']:
-      if 'deprecated' in rule:
-        deprecated = self.deprecated(
-          rule_args=rule['deprecated'],
-          task_vars=task_vars
+    argument_error = validate_args(dict(
+      rules = dict(
+        type='list',
+        required=True,
+        required_if=[
+          [ 'state', 'invalid', [ 'when' ] ]
+        ],
+        elements='dict',
+        options=dict(
+          state=dict(type='str', choices=self.RULE_SPECS.keys(), required=True),
+          path=dict(type='str', required=True),
+          hint=dict(type='str', aliases=['msg']),
+          when=dict(type='str'),
         )
+      )
+    ), self._task.args)
 
-        result['deprecated'] += [ x['path'] for x in deprecated ]
+    if argument_error:
+      return { "failed": True, "msg": argument_error }
+
+    result = super(ActionModule, self).run(tmp=None, task_vars=task_vars)
+    result['issues'] = []
+    result['failed'] = False
+
+    issues = self._identify_issues(task_vars)
+
+    result['issues'] = sorted(issues, key=lambda x: x['path'])
+    result['failed'] = bool([
+      x for x
+      in result['issues']
+      if not self.RULE_SPECS[x['type']]['ignore_errors']
+    ])
 
     return result
+
+  # ------------------------------------------------------------------------------
+  # INTERNAL
+  # ------------------------------------------------------------------------------
+
+  def _identify_issues(self, task_vars):
+    rule_specs = self.RULE_SPECS
+    issues = []
+
+    for rule_index, rule in enumerate(self._task.args['rules']):
+      query = Query(task_vars, self._loader, self._templar)
+      query = query.select(rule['path'])
+      query = getattr(self, '_identify_%s' % rule['state'])(rule, query)
+
+      items = query.commit()
+
+      issues += [{ 'type': rule['state'], 'path': x['path'] } for x in items]
+
+      if items:
+        report_to_display(
+          hint=rule.get('hint', None),
+          banner=rule_specs[rule['state']]['banner'],
+          banner_color=rule_specs[rule['state']]['banner_color'],
+          group_index=rule_index,
+          group_items=items
+        )
+
+    return issues
+
+  # Mark specified variables as having been deprecated.
+  #
+  # pylint: disable=unused-argument
+  def _identify_deprecated(self, rule, query):
+    without_nils = query.where('item != ""')
+
+    if not rule.get('when', None):
+      return without_nils
+
+    return query.where(rule['when'])
+
+  # Fail if any of the specified variables is undefined.
+  #
+  # pylint: disable=unused-argument
+  def _identify_required(self, rule, query):
+    return query.where('item == ""')
+
+  # Fail if any of the specified variables matches the specified condition.
+  #
+  # pylint: disable=unused-argument
+  def _identify_invalid(self, rule, query):
+    return query.where(rule['when'])
 
 # ------------------------------------------------------------------------------
 # INTERNAL
 # ------------------------------------------------------------------------------
+
+# A somewhat declarative interface for selecting variables
+class Query():
+  def __init__(self, task_vars, loader, templar):
+    self._task_vars = task_vars.copy()
+    self._loader = loader
+    self._templar = templar
+    self._pipeline = []
+
+  # (string): Query
+  #
+  # Select one or more deeply nested variables by a dot-delimited path. Supports
+  # glob expressions.
+  #
+  # Examples
+  # --------
+  #
+  #     select('foo')       # the top-level variable "foo"
+  #     select('foo.*')     # direct descendants of "foo"
+  #     select('foo.*.bar') # "bar" property of direct descendants of "foo"
+  #     select('*')         # all top-level variables
+  #
+  # Glob expressions
+  # ----------------
+  #
+  # When a glob expression (*) is specified, an entry will still be constructed
+  # for __every__ leaf covered by the path even if it does not exist. For
+  # example, consider the following struct:
+  #
+  #     {
+  #       "a": {
+  #         "b": {
+  #         },
+  #         "c": {
+  #           "address": u"127.0.0.1"
+  #         }
+  #       }
+  #     }
+  #
+  # For a path query of 'a.*.address', two items will be yielded even though
+  # only one is defined:
+  #
+  #     [
+  #       { "path": "a.b.address", "value": None },
+  #       { "path": "a.c.address", "value": u"127.0.0.1 }
+  #     ]
+  #
+  def select(self, selector):
+    return self._chain(lambda _: over(selector, self._task_vars))
+
+  # (str): Query
+  #
+  # Refine the selection with a Jinja2 test. The expression will be evaluated
+  # with an additional reserved variable "item" pointing to the item being
+  # matched.
+  #
+  # Example:
+  #
+  #     where('item is search("foo")')
+  #     where(lambda x: x == 'foo')
+  def where(self, expr):
+    predicate = self._create_jinja2_predicate(expr)
+
+    return self._chain(lambda items: [merge(x, {
+      'selected': predicate(x['value']),
+    }) for x in items])
+
+  # (): Query
+  #
+  # Invert the selection.
+  def invert(self):
+    return self._chain(lambda items: [merge(x, {
+      'selected': not x.get('selected', True)
+    }) for x in items ])
+
+  # (): list
+  #
+  # Apply the query and produce the list of selected items. Items in the list
+  # will conform to the following structure:
+  #
+  #     { "path": string, "value": any? }
+  #
+  # Value will be None if the variable was not found but was still covered by
+  # the selection (as explained in the globbing section of #select.)
+  def commit(self):
+    scope = reduce(lambda acc, f: f(acc), self._pipeline, [])
+    selected = [x for x in scope if x.get('selected', True)]
+
+    return [omit(['selected'], x) for x in selected]
+
+  def _chain(self, f): # pylint: disable=invalid-name
+    self._pipeline += [ f ]
+    return self
+
+  def _create_jinja2_predicate(self, expr):
+    def match(item):
+      self._task_vars['item'] = '' if item is None else item
+
+      return cond.evaluate_conditional(
+        templar=self._templar,
+        all_vars=self._task_vars
+      )
+
+    cond = Conditional(loader=self._loader)
+    cond.when = [to_text(expr)]
+
+    return match
+
+# (dict, dict): String?
+def validate_args(spec, args):
+  # hack to utilize the argument validation logic in AnsibleModule
+  class DummyConfigurationModule(AnsibleModule):
+    def __init__(self, argument_spec, params):
+      self.argument_spec = argument_spec
+      self.params = params
+
+      super(DummyConfigurationModule, self).__init__(
+        argument_spec=argument_spec,
+        bypass_checks=False,
+        no_log=True,
+        check_invalid_arguments=True
+      )
+
+    def fail_json(self, **kwargs):
+      raise AnsibleOptionsError(kwargs['msg'])
+
+    def _load_params(self):
+      return self.params
+
+  try:
+    DummyConfigurationModule(argument_spec=spec, params=args)
+  except AnsibleOptionsError as configuration_error:
+    return to_native(configuration_error)
+  else:
+    return None
 
 def isiterable(x):
   try:
@@ -113,20 +283,45 @@ def isiterable(x):
 def listof(x):
   return x if isinstance(x, list) else [ x ]
 
+def merge(a, b):
+  c = a.copy()
+  c.update(b)
+  return c
+
+def omit(keys, target):
+  return { x: target[x] for x in target if x not in keys }
+
 def over(path, value):
+  not_found = {}
+
   def descend(path, value, visited):
     if len(path) == 0: # pylint: disable=len-as-condition
-      return { 'path': '.'.join(visited), 'value': value }
+      return {
+        'path': '.'.join(visited),
+        'value': None if value == not_found else value
+      }
 
-    scope = path.pop(0)
+    lens = path.pop(0)
 
     if not isiterable(value):
-      return None
-    elif scope in value:
-      return descend([] + path, value[scope], visited + [ scope ])
-    elif scope == '*':
+      return descend([] + path, not_found, visited + [ lens ])
+    elif lens in value:
+      return descend([] + path, value[lens], visited + [ lens ])
+    elif lens == '*':
       return [ descend([x] + path, value, visited) for x in value.keys() ]
     else:
-      return None
+      return descend([] + path, not_found, visited + [ lens ])
 
-  return [ x for x in listof(descend(path, value, [])) if x is not None ]
+  return listof(descend(path.split('.'), value, []))
+
+def report_to_display(banner, banner_color, hint, group_index, group_items):
+  gutter = '[R:{0}] '.format(group_index + 1)
+  indent = ' '.ljust(len(gutter))
+
+  display.display('{0}{1}\n'.format(gutter, banner), color=banner_color)
+
+  for item in group_items:
+    display.display('{0}  - {1}'.format(indent, item['path']), color=C.COLOR_HIGHLIGHT)
+
+  if hint:
+    display.display('\n{0}HINT: {1}\n'.format(indent, hint), color=C.COLOR_HIGHLIGHT)

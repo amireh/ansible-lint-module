@@ -30,46 +30,68 @@ options:
   rules:
     description: The rules to use for validating the variables
     required: true
+    type: list
     suboptions:
-      deprecated:
-        description: Inform the user that the matching variables have been deprecated
-        suboptions:
-          path:
-            description: Variable path or glob expression
-            required: true
-          msg:
-            description: Message to display to the user if any matching variable was found
-            required: true
+      state:
+        description:
+          - If C(deprecated), a warning will be printed if the variable is found
+            to be defined
+          - If C(invalid), the task will fail if the variable's value passes
+            the test specified in C(when)
+          - If C(required), the task will fail if the variable is not defined
+            or evalutes to an empty string
+        choices: [ deprecated, invalid, required ]
+        required: true
+        type: str
+      path:
+        description: Variable path or glob expression
+        required: true
+        type: str
+      hint:
+        description: A message to help the user address the problem if the rule applies
+        type: str
+        aliases: [ msg ]
+      when:
+        description:
+          - Condition to use for filtering the selected variables
+            based on their value
+          - The content is a Jinja2 Test
+          - Required when I(state=invalid)
+
 
 author:
   - Ahmad Amireh (@amireh)
 '''
 
 EXAMPLES = '''
-- name: deprecate 'secrets.artifactory.api_token'
+- name: validate configuration
   lint:
     rules:
-      - deprecated:
-          path: secrets.artifactory.api_token
-          msg: 'rename to "artifactory_api_token"'
+      # inform the user of a change in the configuration so that they can update:
+      - state: deprecated
+        hint: 'rename to "artifactory_api_token"'
+        path: secrets.artifactory.api_token
 
-      # work over a set of variables
-      - deprecated:
-          path: secrets.jfrog.*
-          msg: 'rename to "artifactory_$1"'
+      # apply to a set of variables:
+      - state: deprecated
+        hint: 'rename to "artifactory_*"'
+        path: secrets.jfrog.*
 
-      # filter by specific values
-      - invalid:
-          msg: 'artifactory API token must be b64 encoded!'
-          path: artifactory_api_token
-          when: item[0] == item[1]
-          with: [ item, item | b64decode ]
+      # fail unless a variable be set:
+      - state: required
+        path: artifactory_api_token
+
+      # fail if a variable has an invalid value:
+      - state: invalid
+        hint: 'host must be an IP address (A record) not a hostname'
+        path: services.*.host
+        when: item is not match('[\d\.]+')
 '''
 
 RETURN = '''
-original_message:
-    description: The original name param that was passed in
-    type: str
-message:
-    description: The output message that the sample module generates
+issues:
+  description: The issues detected in the variables
+  returned: always
+  type: list
+  sample: [{ "path": "foo", "type": "deprecated" }]
 '''

@@ -5,6 +5,7 @@ docker run \
   -v "$PWD":/mnt/src \
   -e MIMIC_UID="$(id -u)" \
   -e MIMIC_GID="$(id -g)" \
+  -e HISTCONTROL="erasedups" \
   -w /mnt/src \
     amireh/ansible-dev:latest \
       bash "$@"

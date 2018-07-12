@@ -1,0 +1,3 @@
+#!/bin/sh
+
+bin/unit-test --cov=. --cov-report=html "$@"

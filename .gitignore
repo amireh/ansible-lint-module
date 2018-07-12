@@ -1,6 +1,4 @@
 *.pyc
 .buildinfo
-.cache
-/.coverage
+.coverage
 /htmlcov
-__pycache__

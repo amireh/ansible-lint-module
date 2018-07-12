@@ -1,14 +1,14 @@
 from lint import over
 
 def test_over_branches():
-  result = over([ 'foo' ], { "foo": { "bar": 1 } })
+  result = over('foo', { "foo": { "bar": 1 } })
 
   assert type(result) == list
   assert len(result) == 1
   assert type(result[0]) == dict
 
 def test_over_leaves():
-  result = over([ 'foo', 'bar' ], { "foo": { "bar": 1 } })
+  result = over('foo.bar', { "foo": { "bar": 1 } })
 
   assert type(result) == list
   assert len(result) == 1
@@ -17,13 +17,14 @@ def test_over_leaves():
   assert result[0]['value'] == 1
 
 def test_over_undefined():
-  result = over([ 'foo', 'bar' ], { "foo": 1 })
+  result = over('foo.bar', { "foo": 1 })
 
   assert type(result) == list
-  assert len(result) == 0
+  assert len(result) == 1
+  assert result[0]['value'] == None
 
 def test_over_glob():
-  result = over([ 'foo', '*' ], { "foo": { "a": 1, "b": 2 } })
+  result = over('foo.*', { "foo": { "a": 1, "b": 2 } })
 
   assert type(result) == list
   assert len(result) == 2
@@ -31,14 +32,18 @@ def test_over_glob():
   assert result[1]['path'] == 'foo.b'
 
 def test_over_glob_leaves():
-  result = over([ 'foo', '*', 'name' ], { "foo": { "a": { "name": "A" }, "b": 2 } })
+  result = over('foo.*.name', { "foo": { "a": { "name": "A" }, "b": 2 } })
 
   assert type(result) == list
-  assert len(result) == 1
-  assert result[0]['path'] == 'foo.a.name'
+  assert len(result) == 2
+  assert result[0]['path'] == u'foo.a.name'
+  assert result[0]['value'] == 'A'
+
+  assert result[1]['path'] == u'foo.b.name'
+  assert result[1]['value'] == None
 
 def test_over_glob_root():
-  result = over([ '*' ], { "foo": { "a": { "name": "A" }, "b": 2 }, "bar": None })
+  result = over('*', { "foo": { "a": { "name": "A" }, "b": 2 }, "bar": None })
 
   assert type(result) == list
   assert len(result) == 2

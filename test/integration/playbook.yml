@@ -1,7 +1,76 @@
 - hosts: localhost
+  vars:
+    foo: 1
+    services:
+      a:
+        address: 127.0.0.1
+        port: 0
+      b:
+        address: 127.0.0.1
+        port: 22
+      c:
+        port: 5432
+      d:
+        address: some.host
+        port: "hah"
   tasks:
     - lint:
         rules:
-          - deprecated:
-              path: foo
-              msg: "use 'bar' instead of 'foo'!"
+          - state: deprecated
+            path: foo
+            msg: "use 'bar' instead of 'foo'!"
+
+          - state: deprecated
+            path: baz
+            msg: ""
+
+          - state: required
+            path: services.*.address
+            msg: every application must have an address
+
+          - state: invalid
+            path: services.*.port
+            when: item is not number or item is lessthan(1024)
+            msg: port must not be privileged (that is, only over 1024)
+
+          - state: invalid
+            path: services.*.address
+            msg:  address must be an IP address (A record)
+            when: item is not match('[\d\.]+')
+      register: lint_result
+      failed_when: "'exception' in lint_result"
+
+    - debug:
+        var: lint_result
+    - assert:
+        that: |
+          lint_result['issues'] == [
+            {
+              "path": "foo",
+              "type": "deprecated"
+            },
+            {
+              "path": "services.a.port",
+              "type": "invalid"
+            },
+            {
+              "path": "services.b.port",
+              "type": "invalid"
+            },
+            {
+              "path": "services.c.address",
+              "type": "required"
+            },
+            {
+              "path": "services.c.address",
+              "type": "invalid"
+            },
+            {
+              "path": "services.d.address",
+              "type": "invalid"
+            },
+            {
+              "path": "services.d.port",
+              "type": "invalid"
+            }
+          ]
