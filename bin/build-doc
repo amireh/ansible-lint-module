@@ -17,4 +17,5 @@ build() {
   chown -R donkey:donkey /mnt/src/docs
 }
 
-bin/shell -c "$(declare -f build) && build"
+bin/shell -c "$(declare -f build) && build" &&
+find docs -name '_*' -type d -exec touch {}/.nojekyll \;
