@@ -162,7 +162,7 @@ function-naming-style=snake_case
 #function-rgx=
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=x,a,b,c
+good-names=x,a,b,c,f,g
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no
@@ -219,8 +219,7 @@ allow-global-unused-variables=yes
 
 # List of strings which can identify a callback function by name. A callback
 # name must start or end with one of those strings.
-callbacks=cb_,
-          _cb
+callbacks=cb_,_cb,f,g
 
 # A regular expression matching the name of dummy variables (i.e. expectedly
 # not used).

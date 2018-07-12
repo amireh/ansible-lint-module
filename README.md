@@ -1,5 +1,7 @@
 # ansible-lint-module
 
+[![Build Status](https://travis-ci.org/amireh/ansible-lint-module.svg?branch=master)](https://travis-ci.org/amireh/ansible-lint-module)
+
 _This is a local action module for Ansible._
 
 Detect and report problems in the current play variables such as deprecated
