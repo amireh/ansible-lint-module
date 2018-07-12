@@ -221,7 +221,11 @@ class Query():
   # Value will be None if the variable was not found but was still covered by
   # the selection (as explained in the globbing section of #select.)
   def commit(self):
-    scope = reduce(lambda acc, f: f(acc), self._pipeline, [])
+    scope = None
+
+    for f in self._pipeline:
+      scope = f(scope)
+
     selected = [x for x in scope if x.get('selected', True)]
 
     return [omit(['selected'], x) for x in selected]
