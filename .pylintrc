@@ -162,7 +162,7 @@ function-naming-style=snake_case
 #function-rgx=
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=x
+good-names=x,a,b,c
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no
