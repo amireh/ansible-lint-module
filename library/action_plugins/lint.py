@@ -8,12 +8,13 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type # pylint: disable=invalid-name
 
 from textwrap import TextWrapper
-from ansible.plugins.action import ActionBase
+from ansible import constants as C
+from ansible.errors import AnsibleAction, AnsibleActionFail, AnsibleError, AnsibleFileNotFound, AnsibleOptionsError
+from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible.module_utils.basic import AnsibleModule
 from ansible.playbook.conditional import Conditional
-from ansible.module_utils._text import to_native, to_text
-from ansible import constants as C
-from ansible.errors import AnsibleOptionsError
+from ansible.plugins.action import ActionBase
+from ansible.parsing.utils.yaml import from_yaml
 
 try:
   from __main__ import display
@@ -50,30 +51,43 @@ class ActionModule(ActionBase):
     }
   }
 
+  def __init__(self, display=display, *args, **kwargs):
+    super(ActionModule, self).__init__(*args, **kwargs)
+    self._display = kwargs.get('display', display)
+
   def run(self, tmp=None, task_vars=None):
     if task_vars is None:
-      task_vars = dict()
+      task_vars = dict() # pragma: no cover
 
     argument_error = validate_args(dict(
-      rules = dict(
-        type='list',
-        required=True,
-        required_if=[
-          [ 'state', 'invalid', [ 'when' ] ],
-          [ 'state', 'suspicious', [ 'when' ] ],
+      lint = dict(
+        type='dict',
+        required_one_of=[
+          [ 'rules_file', 'rules' ],
         ],
-        elements='dict',
         options=dict(
-          state=dict(type='str', choices=self.RULE_SPECS.keys(), required=True),
-          path=dict(type='str', required=True),
-          hint=dict(type='str', aliases=['msg']),
-          hint_wrap=dict(type='bool', default=True),
-          banner=dict(type='str', default=None),
-          banner_color=dict(type='str', default=None),
-          when=dict(type='str'),
+          rules_file = dict(type='path', default=None),
+          rules = dict(
+            type='list',
+            default=None,
+            required_if=[
+              [ 'state', 'invalid', [ 'when' ] ],
+              [ 'state', 'suspicious', [ 'when' ] ],
+            ],
+            elements='dict',
+            options=dict(
+              state=dict(type='str', choices=self.RULE_SPECS.keys(), required=True),
+              path=dict(type='str', required=True),
+              hint=dict(type='str', aliases=['msg']),
+              hint_wrap=dict(type='bool', default=True),
+              banner=dict(type='str', default=None),
+              banner_color=dict(type='str', default=None),
+              when=dict(type='str'),
+            )
+          )
         )
       )
-    ), self._task.args)
+    ), { 'lint' : self._task.args })
 
     if argument_error:
       return { "failed": True, "msg": argument_error }
@@ -82,8 +96,18 @@ class ActionModule(ActionBase):
     result['issues'] = []
     result['failed'] = False
 
-    issues = self._identify_issues(task_vars)
+    rules = self._task.args['rules'] or []
 
+    if self._task.args['rules_file']:
+      rules = YAMLFileLoader(
+        loader=self._loader,
+        templar=self._templar,
+        find_needle=self._find_needle
+      ).load_file(self._task.args['rules_file'])
+
+    issues = self._identify_issues(rules, task_vars)
+
+    result['rule_count'] = len(rules)
     result['issues'] = sorted(issues, key=lambda x: x['path'])
     result['failed'] = bool([
       x for x
@@ -97,11 +121,11 @@ class ActionModule(ActionBase):
   # INTERNAL
   # ------------------------------------------------------------------------------
 
-  def _identify_issues(self, task_vars):
+  def _identify_issues(self, rules, task_vars):
     rule_specs = self.RULE_SPECS
     issues = []
 
-    for rule_index, rule in enumerate(self._task.args['rules']):
+    for rule_index, rule in enumerate(rules):
       query = Query(task_vars, self._loader, self._templar)
       query = query.select(rule['path'])
       query = getattr(self, '_identify_%s' % rule['state'])(rule, query)
@@ -112,6 +136,7 @@ class ActionModule(ActionBase):
 
       if items:
         report_to_display(
+          display=self._display,
           hint=rule.get('hint', None),
           hint_wrap=rule.get('hint_wrap'),
           banner=rule.get('banner') or rule_specs[rule['state']]['banner'],
@@ -154,6 +179,46 @@ class ActionModule(ActionBase):
 # ------------------------------------------------------------------------------
 # INTERNAL
 # ------------------------------------------------------------------------------
+
+class YAMLFileLoader():
+  def __init__(self, loader, templar, find_needle):
+    self._loader = loader
+    self._templar = templar
+    self._find_needle = find_needle
+
+  def load_file(self, file_name):
+    try:
+      source = self._find_needle('files', file_name)
+    except AnsibleError as e:
+      raise AnsibleActionFail(to_text(e))
+
+    # Get vault decrypted tmp file
+    try:
+      tmp_source = self._loader.get_real_file(source)
+    except AnsibleFileNotFound as e: # pragma: no cover
+      raise AnsibleActionFail("could not find src=%s, %s" % (source, to_text(e))) # pragma: no cover
+
+    b_tmp_source = to_bytes(tmp_source, errors='surrogate_or_strict')
+
+    # template the source data locally & get ready to transfer
+    try:
+      with open(b_tmp_source, 'rb') as f:
+        template_data = to_text(f.read(), errors='surrogate_or_strict')
+    except AnsibleAction: # pragma: no cover
+      raise # pragma: no cover
+    except Exception as e: # pragma: no cover
+      raise AnsibleActionFail("%s: %s" % (type(e).__name__, to_text(e))) # pragma: no cover
+    finally:
+      self._loader.cleanup_tmp_file(b_tmp_source)
+
+    templated = self._templar.do_template(
+      template_data,
+      preserve_trailing_newlines=True,
+      escape_backslashes=False
+    )
+
+    return from_yaml(data=templated, file_name=file_name)
+
 
 # A somewhat declarative interface for selecting variables
 class Query():
@@ -352,7 +417,7 @@ def over(expr, value):
   return flatten(listof(descend(expr.split('.'), value, [])))
 
 # pylint: disable=too-many-arguments
-def report_to_display(banner, banner_color, hint, hint_wrap, group_index, group_items):
+def report_to_display(display, banner, banner_color, hint, hint_wrap, group_index, group_items):
   gutter = '[R:{0}] '.format(group_index + 1)
   indent = ' '.ljust(len(gutter))
 

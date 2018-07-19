@@ -9,6 +9,24 @@
         file: vars/user_settings.yml
 
     - lint:
+      register: lint_blank_result
+      ignore_errors: yes
+
+    - assert:
+        that: |
+          lint_blank_result is failed and
+          lint_blank_result.msg == "one of the following is required: rules_file, rules found in lint"
+
+    - lint:
+        rules_file: lint-rules.yml
+      vars:
+        external_path_var: apps.*.address
+      register: lint_from_file_result
+
+    - assert:
+        that: lint_from_file_result.rule_count == 1
+
+    - lint:
         rules:
           - state: deprecated
             path: foo

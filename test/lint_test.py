@@ -1,5 +1,5 @@
 from lint import ActionModule as LintActionModule
-from test_utils import create_action_module
+from test_utils import NullDisplay, create_action_module
 
 from ansible.playbook.task import Task
 from ansible.playbook.play_context import PlayContext
@@ -8,7 +8,7 @@ from ansible.template import Templar
 from ansible.parsing.dataloader import DataLoader
 
 def run(args=None, task_vars=None):
-  return create_action_module(args, task_vars).run(None, task_vars=task_vars)
+  return create_action_module('lint', args, task_vars).run(None, task_vars=task_vars)
 
 def test_lint_deprecated():
   result = run(
@@ -117,6 +117,20 @@ def test_lint_required():
   assert result['failed']
   assert result['issues'] == [{ 'type': u'required', 'path': u'apps.c.address' }]
 
+def test_lint_rules_file():
+  result = run(
+    args={
+      "rules_file": u"test/files/lint-rules-static.yml"
+    },
+    task_vars={
+      "apps": { "a": {} }
+    }
+  )
+
+  assert type(result) == dict
+  assert result['failed']
+  assert result['issues'] == [{ 'type': u'required', 'path': u'apps.a.address' }]
+
 def test_lint_invalid():
   result = run(
     args={
@@ -150,6 +164,56 @@ def test_lint_invalid():
     { 'type': u'invalid', 'path': u'apps.b.address' },
     { 'type': u'invalid', 'path': u'apps.c.address' }
   ]
+
+def test_lint_suspicious():
+  result = run(
+    args={
+      "rules": [
+        {
+          "state": u"suspicious",
+          "path": u"apps.*.*",
+          "msg":  u"recognized properties are 'address', 'port' ",
+          "when": u"captures[1] not in [ 'address', 'port' ]"
+        }
+      ]
+    },
+    task_vars={
+      "apps": {
+        "a": {
+          "addres": u"127.0.0.1"
+        },
+        "b": {
+          "address": u"some.host"
+        }
+      }
+    }
+  )
+
+  assert type(result) == dict
+  assert not result['failed']
+  assert result['issues'] == [
+    { 'type': u'suspicious', 'path': u'apps.a.addres' }
+  ]
+
+def test_lint_hint_wrap():
+  result = run(
+    args={
+      "rules": [
+        {
+          "state": u"deprecated",
+          "path": u"foo",
+          "hint": u"teehee!",
+          "hint_wrap": False
+        }
+      ]
+    },
+    task_vars={
+      "foo": u"woot"
+    }
+  )
+
+  assert type(result) == dict
+  assert not result['failed']
 
 def test_lint_validation_rules():
   result = run(
@@ -201,4 +265,13 @@ def test_lint_validation_rules():
   )
 
   assert result['failed']
-  assert result['msg'] == 'state is invalid but all of the following are missing: when found in rules'
+  assert result['msg'] == 'state is invalid but all of the following are missing: when found in lint -> rules'
+
+  result = run(
+    args={
+    },
+    task_vars={}
+  )
+
+  assert result['failed']
+  assert result['msg'] == 'one of the following is required: rules_file, rules found in lint'

@@ -1,0 +1,2 @@
+- state: required
+  path: "{{ __please_dont_exist__ }}"

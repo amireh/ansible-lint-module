@@ -1825,11 +1825,12 @@
                 <tr>
                                                             <td colspan="2">
                 <b>rules</b>
-                <br/><div style="font-size: small; color: red">list</div>                    <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                <br/><div style="font-size: small; color: red">list</div>                                                        </td>
                             <td>
                                                                                                                                                         </td>
                                                             <td>
-                                                                    <div>The rules to use for validating the variables</div>
+                                                                    <div>The rules to use for validating the variables.</div>
+                                                <div>Required if <code>rules_rules</code> is not set.</div>
                                                                             </td>
         </tr>
                                                         <tr>
@@ -1860,6 +1861,7 @@
                                                                     <div>If <code>deprecated</code>, a warning will be printed if the variable is found to be defined</div>
                                                 <div>If <code>invalid</code>, the task will fail if the variable's value passes the test specified in <code>when</code></div>
                                                 <div>If <code>required</code>, the task will fail if the variable is not defined or evalutes to an empty string</div>
+                                                <div>If <code>suspicious</code>, the task will not fail but a warning is provided that the (matching) variables are potentially invalid.</div>
                                                                             </td>
         </tr>
                             <tr>
@@ -1932,7 +1934,18 @@ for the full listing.</div>
                                                                             </td>
         </tr>
 
-                                    </table>
+                                            <tr>
+                                                            <td colspan="2">
+                <b>rules_file</b>
+                <br/><div style="font-size: small; color: red">path</div>                                                        </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                                                    <div>YAML file containing the rules to use.</div>
+                                                <div>Required if <code>rules</code> is not set.</div>
+                                                                            </td>
+        </tr>
+                    </table>
 <br/></div>
 <div class="section" id="examples">
 <h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>

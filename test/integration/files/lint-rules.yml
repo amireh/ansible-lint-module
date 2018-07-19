@@ -1,0 +1,2 @@
+- state: required
+  path: "{{ external_path_var }}"

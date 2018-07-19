@@ -1,22 +1,29 @@
 from lint import ActionModule as LintActionModule, Query
 
-from ansible.playbook.task import Task
+from ansible.parsing.dataloader import DataLoader
+from ansible.playbook.block import Block
+from ansible.playbook.play import Play
 from ansible.playbook.play_context import PlayContext
+from ansible.playbook.task import Task
 from ansible.plugins.connection.local import Connection
 from ansible.template import Templar
-from ansible.parsing.dataloader import DataLoader
 
-def create_action_module(args=None, task_vars=None):
-  play_context = PlayContext()
-  loader = DataLoader()
+class NullDisplay():
+  def display(*_args, **_kwargs):
+    return True
+
+def create_action_module(name, args=None, task_vars=None):
+  play = Play.load(dict())
+  play_context = PlayContext(play=play)
 
   return LintActionModule(
-    task=Task.load(dict(local_action='lint', args=args)),
+    task=Task.load(data=dict(local_action=name, args=args), block=Block(play=play)),
     connection=Connection(play_context, new_stdin=False),
     play_context=play_context,
-    loader=loader,
-    templar=Templar(loader),
+    loader=play._loader,
+    templar=Templar(play._loader),
     shared_loader_obj=None,
+    display=NullDisplay()
   )
 
 def create_query(task_vars):

@@ -27,9 +27,15 @@ description:
     assigned an invalid value.
 
 options:
+  rules_file:
+    description:
+      - YAML file containing the rules to use.
+      - Required if C(rules) is not set.
+    type: path
   rules:
-    description: The rules to use for validating the variables
-    required: true
+    description:
+      - The rules to use for validating the variables.
+      - Required if C(rules_rules) is not set.
     type: list
     suboptions:
       state:
@@ -40,6 +46,8 @@ options:
             the test specified in C(when)
           - If C(required), the task will fail if the variable is not defined
             or evalutes to an empty string
+          - If C(suspicious), the task will not fail but a warning is provided
+            that the (matching) variables are potentially invalid.
         choices: [ deprecated, invalid, required, suspicious ]
         required: true
         type: str
