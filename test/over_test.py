@@ -42,6 +42,14 @@ def test_over_glob_leaves():
   assert result[1]['path'] == u'foo.b.name'
   assert result[1]['value'] == None
 
+def test_over_multi_glob():
+  result = over('foo.*.*', { "foo": { "a": { "host": u"127.0.0.1", "port": 80 }, "b": 2 } })
+
+  assert type(result) == list
+  assert len(result) == 3
+  assert result[0]['path'] == u'foo.a.host'
+  assert result[0]['value'] == u'127.0.0.1'
+
 def test_over_glob_root():
   result = over('*', { "foo": { "a": { "name": "A" }, "b": 2 }, "bar": None })
 

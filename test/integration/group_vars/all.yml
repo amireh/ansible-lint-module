@@ -1,0 +1,13 @@
+foo: 1
+services:
+  a:
+    address: 127.0.0.1
+    port: 8080
+  b:
+    address: 127.0.0.1
+    port: 22
+  c:
+    port: 5432
+  d:
+    address: 127.0.0.1
+    port: 80

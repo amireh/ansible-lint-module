@@ -1,19 +1,13 @@
 - hosts: localhost
-  vars:
-    foo: 1
-    services:
-      a:
-        address: 127.0.0.1
-        port: 0
-      b:
-        address: 127.0.0.1
-        port: 22
-      c:
-        port: 5432
-      d:
-        address: some.host
-        port: "hah"
   tasks:
+    - include_vars:
+        name: ansible_base_variables
+        file: group_vars/all.yml
+
+    - include_vars:
+        name: ansible_user_variables
+        file: vars/user_settings.yml
+
     - lint:
         rules:
           - state: deprecated
@@ -37,6 +31,20 @@
             path: services.*.address
             msg:  address must be an IP address (A record)
             when: item is not match('[\d\.]+')
+
+          - state: suspicious
+            path: '*'
+            hint: Check for typos?
+            when: |
+              captures[0] in ansible_user_variables.keys() and
+              captures[0] not in ansible_base_variables.keys()
+
+          # warn about potentially invalid variables
+          - state: suspicious
+            path: services.*.*
+            when: captures[1] not in ([ 'address', 'port' ])
+            hint: property is not recognized, please check for typos
+
       register: lint_result
       failed_when: "'exception' in lint_result"
 
@@ -48,6 +56,10 @@
             {
               "path": "foo",
               "type": "deprecated"
+            },
+            {
+              "path": "mistyped_var",
+              "type": "suspicious"
             },
             {
               "path": "services.a.port",
@@ -68,6 +80,10 @@
             {
               "path": "services.d.address",
               "type": "invalid"
+            },
+            {
+              "path": "services.d.por",
+              "type": "suspicious"
             },
             {
               "path": "services.d.port",

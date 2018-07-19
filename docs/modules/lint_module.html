@@ -1835,12 +1835,12 @@
                                                         <tr>
                                                 <td class="elbow-placeholder"></td>
                                             <td colspan="1">
-                <b>path</b>
-                <br/><div style="font-size: small; color: red">str</div>                    <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                <b>banner</b>
+                <br/><div style="font-size: small; color: red">str</div>                                                        </td>
                             <td>
                                                                                                                                                         </td>
                                                             <td>
-                                        <div>Variable path or glob expression</div>
+                                        <div>The title to display for the offenses found for this rule</div>
                                                     </td>
         </tr>
                             <tr>
@@ -1853,25 +1853,13 @@
                                                                                                                                                             <li>deprecated</li>
                                                                                                                                                                                             <li>invalid</li>
                                                                                                                                                                                             <li>required</li>
+                                                                                                                                                                                            <li>suspicious</li>
                                                                                 </ul>
                                                                         </td>
                                                             <td>
                                                                     <div>If <code>deprecated</code>, a warning will be printed if the variable is found to be defined</div>
                                                 <div>If <code>invalid</code>, the task will fail if the variable's value passes the test specified in <code>when</code></div>
                                                 <div>If <code>required</code>, the task will fail if the variable is not defined or evalutes to an empty string</div>
-                                                                            </td>
-        </tr>
-                            <tr>
-                                                <td class="elbow-placeholder"></td>
-                                            <td colspan="1">
-                <b>when</b>
-                                                                        </td>
-                            <td>
-                                                                                                                                                        </td>
-                                                            <td>
-                                                                    <div>Condition to use for filtering the selected variables based on their value</div>
-                                                <div>The content is a Jinja2 Test</div>
-                                                <div>Required when <em>state=invalid</em></div>
                                                                             </td>
         </tr>
                             <tr>
@@ -1886,6 +1874,63 @@
                                                             <div style="font-size: small; color: darkgreen"><br/>aliases: msg</div>
                                 </td>
         </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>path</b>
+                <br/><div style="font-size: small; color: red">str</div>                    <br/><div style="font-size: small; color: red">required</div>                                    </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>Variable path or glob expression</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>banner_color</b>
+                <br/><div style="font-size: small; color: red">str</div>                                                        </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                        <div>ANSI terminal color to use for the banner message. For example,
+blue would be &quot;0;34&quot;, black &quot;0;30&quot; and &quot;0&quot; for no coloring. See
+<a href='https://github.com/ansible/ansible/blob/v2.5.6/lib/ansible/utils/color.py#L57'>https://github.com/ansible/ansible/blob/v2.5.6/lib/ansible/utils/color.py#L57</a>
+for the full listing.</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>hint_wrap</b>
+                <br/><div style="font-size: small; color: red">bool</div>                                                        </td>
+                            <td>
+                                                                                                                                                                                                                <ul><b>Choices:</b>
+                                                                                                                                                            <li>no</li>
+                                                                                                                                                                                            <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
+                                                                                </ul>
+                                                                        </td>
+                                                            <td>
+                                        <div>Whether to apply text-wrapping to multiline hint messages</div>
+                                                    </td>
+        </tr>
+                            <tr>
+                                                <td class="elbow-placeholder"></td>
+                                            <td colspan="1">
+                <b>when</b>
+                                                                        </td>
+                            <td>
+                                                                                                                                                        </td>
+                                                            <td>
+                                                                    <div>Condition to use for filtering the selected variables based on their value</div>
+                                                <div>The content is a Jinja2 Test</div>
+                                                <div>The special (string) variable &quot;item&quot; will point to the value of the variable matched in <code>path</code>.</div>
+                                                <div>The special (list of strings) variable &quot;captures&quot; will contain the keys expanded by the &quot;*&quot; glob expression (if any).</div>
+                                                <div>When globbing (i.e. using the &quot;*&quot; expression), the special variable &quot;item&quot; is always coerced to string even if the value is not defined. If you need to test whether the value is defined, use &quot;item == ''&quot; or &quot;item != ''&quot; instead of the &quot;defined()&quot; test.</div>
+                                                <div>Required when <em>state=invalid</em></div>
+                                                <div>Required when <em>state=suspicious</em></div>
+                                                                            </td>
+        </tr>
 
                                     </table>
 <br/></div>
@@ -1896,13 +1941,13 @@
     <span class="l l-Scalar l-Scalar-Plain">rules</span><span class="p p-Indicator">:</span>
       <span class="c1"># inform the user of a change in the configuration so that they can update:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">deprecated</span>
-        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;rename</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">&quot;artifactory_api_token&quot;&#39;</span>
         <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">secrets.artifactory.api_token</span>
+        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;rename</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">&quot;artifactory_api_token&quot;&#39;</span>
 
       <span class="c1"># apply to a set of variables:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">deprecated</span>
-        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;rename</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">&quot;artifactory_*&quot;&#39;</span>
         <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">secrets.jfrog.*</span>
+        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;rename</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">&quot;artifactory_*&quot;&#39;</span>
 
       <span class="c1"># fail unless a variable be set:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">required</span>
@@ -1910,9 +1955,21 @@
 
       <span class="c1"># fail if a variable has an invalid value:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">invalid</span>
-        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;host</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">IP</span><span class="nv"> </span><span class="s">address</span><span class="nv"> </span><span class="s">(A</span><span class="nv"> </span><span class="s">record)</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">hostname&#39;</span>
-        <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">services.*.host</span>
+        <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">services.*.address</span>
         <span class="l l-Scalar l-Scalar-Plain">when</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">item is not match(&#39;[\d\.]+&#39;)</span>
+        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;address</span><span class="nv"> </span><span class="s">must</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">IP</span><span class="nv"> </span><span class="s">address</span><span class="nv"> </span><span class="s">(A</span><span class="nv"> </span><span class="s">record)</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">hostname&#39;</span>
+
+      <span class="c1"># require a value to be one of an enum:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">invalid</span>
+        <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">some_variable</span>
+        <span class="l l-Scalar l-Scalar-Plain">when</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">item not in [ &#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39; ]</span>
+
+      <span class="c1"># warn about unrecognized properties:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">state</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">suspicious</span>
+        <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">services.*.*</span>
+        <span class="l l-Scalar l-Scalar-Plain">when</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">captures[1] not in [ &#39;address&#39;, &#39;port&#39; ]</span>
+        <span class="l l-Scalar l-Scalar-Plain">banner</span><span class="p p-Indicator">:</span> <span class="s">&#39;The</span><span class="nv"> </span><span class="s">following</span><span class="nv"> </span><span class="s">properties</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">not</span><span class="nv"> </span><span class="s">recognized:&#39;</span>
+        <span class="l l-Scalar l-Scalar-Plain">hint</span><span class="p p-Indicator">:</span> <span class="s">&#39;please</span><span class="nv"> </span><span class="s">check</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">typos&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -1974,7 +2031,7 @@
   _st('install','yABGvz2N8PwcwBxyfzUc','2.0.0');
 </script>
 
-  <p>Last updated on Jul 12, 2018.<br/>
+  <p>Last updated on Jul 19, 2018.<br/>
   Copyright © 2018 Red Hat, Inc. <br/>
   </p>
 </footer>

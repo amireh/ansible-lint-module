@@ -1,0 +1,6 @@
+[run]
+data_file = .coverage
+omit = library/lint.py
+
+[html]
+directory = coverage

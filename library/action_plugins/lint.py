@@ -7,6 +7,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type # pylint: disable=invalid-name
 
+from textwrap import TextWrapper
 from ansible.plugins.action import ActionBase
 from ansible.module_utils.basic import AnsibleModule
 from ansible.playbook.conditional import Conditional
@@ -37,10 +38,16 @@ class ActionModule(ActionBase):
     },
 
     'invalid': {
-      'banner': u'The following variables have an invalid value:',
+      'banner': u'The following variables are invalid:',
       'banner_color': C.COLOR_ERROR,
       'ignore_errors': False,
     },
+
+    'suspicious': {
+      'banner': u'The following variables *may* be invalid:',
+      'banner_color': C.COLOR_WARN,
+      'ignore_errors': True,
+    }
   }
 
   def run(self, tmp=None, task_vars=None):
@@ -52,13 +59,17 @@ class ActionModule(ActionBase):
         type='list',
         required=True,
         required_if=[
-          [ 'state', 'invalid', [ 'when' ] ]
+          [ 'state', 'invalid', [ 'when' ] ],
+          [ 'state', 'suspicious', [ 'when' ] ],
         ],
         elements='dict',
         options=dict(
           state=dict(type='str', choices=self.RULE_SPECS.keys(), required=True),
           path=dict(type='str', required=True),
           hint=dict(type='str', aliases=['msg']),
+          hint_wrap=dict(type='bool', default=True),
+          banner=dict(type='str', default=None),
+          banner_color=dict(type='str', default=None),
           when=dict(type='str'),
         )
       )
@@ -102,10 +113,11 @@ class ActionModule(ActionBase):
       if items:
         report_to_display(
           hint=rule.get('hint', None),
-          banner=rule_specs[rule['state']]['banner'],
-          banner_color=rule_specs[rule['state']]['banner_color'],
+          hint_wrap=rule.get('hint_wrap'),
+          banner=rule.get('banner') or rule_specs[rule['state']]['banner'],
+          banner_color=rule.get('banner_color') or rule_specs[rule['state']]['banner_color'],
           group_index=rule_index,
-          group_items=items
+          group_items=sorted(items, key=lambda x: x['path'])
         )
 
     return issues
@@ -131,6 +143,12 @@ class ActionModule(ActionBase):
   #
   # pylint: disable=unused-argument
   def _identify_invalid(self, rule, query):
+    return query.where(rule['when'])
+
+  # Fail if any of the specified variables matches the specified condition.
+  #
+  # pylint: disable=unused-argument
+  def _identify_suspicious(self, rule, query):
     return query.where(rule['when'])
 
 # ------------------------------------------------------------------------------
@@ -296,6 +314,17 @@ def merge(a, b):
 def omit(keys, target):
   return { x: target[x] for x in target if x not in keys }
 
+def flatten(lists):
+  memo = []
+
+  for item in lists:
+    if isinstance(item, list):
+      memo += flatten(item)
+    else:
+      memo.append(item)
+
+  return memo
+
 def over(expr, value):
   not_found = {}
 
@@ -320,9 +349,10 @@ def over(expr, value):
     else:
       return descend([] + path, not_found, visited + [ lens ])
 
-  return listof(descend(expr.split('.'), value, []))
+  return flatten(listof(descend(expr.split('.'), value, [])))
 
-def report_to_display(banner, banner_color, hint, group_index, group_items):
+# pylint: disable=too-many-arguments
+def report_to_display(banner, banner_color, hint, hint_wrap, group_index, group_items):
   gutter = '[R:{0}] '.format(group_index + 1)
   indent = ' '.ljust(len(gutter))
 
@@ -331,5 +361,14 @@ def report_to_display(banner, banner_color, hint, group_index, group_items):
   for item in group_items:
     display.display('{0}  - {1}'.format(indent, item['path']), color=C.COLOR_HIGHLIGHT)
 
-  if hint:
+  if hint and not hint_wrap:
     display.display('\n{0}HINT: {1}\n'.format(indent, hint), color=C.COLOR_HIGHLIGHT)
+  elif hint:
+    wrapper = TextWrapper()
+    wrapper.initial_indent = indent
+    wrapper.subsequent_indent = indent
+    wrapper.drop_whitespace = False
+    wrapper.width = 70 - len(indent)
+    wrapped = '\n'.join(wrapper.wrap('HINT: {0}'.format(hint)))
+
+    display.display('\n{0}\n'.format(wrapped), color=C.COLOR_HIGHLIGHT)
