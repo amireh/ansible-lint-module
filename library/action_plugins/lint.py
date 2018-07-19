@@ -200,7 +200,7 @@ class Query():
     predicate = self._create_jinja2_predicate(expr)
 
     return self._chain(lambda items: [merge(x, {
-      'selected': predicate(x['value']),
+      'selected': predicate(x),
     }) for x in items])
 
   # (): Query
@@ -236,7 +236,8 @@ class Query():
 
   def _create_jinja2_predicate(self, expr):
     def match(item):
-      self._task_vars['item'] = '' if item is None else item
+      self._task_vars['item'] = '' if item['value'] is None else item['value']
+      self._task_vars['captures'] = item['captures']
 
       return cond.evaluate_conditional(
         templar=self._templar,
@@ -295,13 +296,16 @@ def merge(a, b):
 def omit(keys, target):
   return { x: target[x] for x in target if x not in keys }
 
-def over(path, value):
+def over(expr, value):
   not_found = {}
 
   def descend(path, value, visited):
     if len(path) == 0: # pylint: disable=len-as-condition
       return {
         'path': '.'.join(visited),
+        'captures': [
+          visited[index] for index, x in enumerate(expr.split('.')) if x == '*'
+        ],
         'value': None if value == not_found else value
       }
 
@@ -316,7 +320,7 @@ def over(path, value):
     else:
       return descend([] + path, not_found, visited + [ lens ])
 
-  return listof(descend(path.split('.'), value, []))
+  return listof(descend(expr.split('.'), value, []))
 
 def report_to_display(banner, banner_color, hint, group_index, group_items):
   gutter = '[R:{0}] '.format(group_index + 1)

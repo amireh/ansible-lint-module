@@ -31,6 +31,27 @@ def test_lint_deprecated():
   assert not result['failed']
   assert result['issues'] == [{ 'type': u'deprecated', 'path': u'foo' }]
 
+def test_lint_deprecated_with_backrefs():
+  result = run(
+    args={
+      "rules": [
+        {
+          "state": u"deprecated",
+          "path": u"*",
+          "when": u"captures[0] == 'foo'",
+          "hint":  u"stop using foo!"
+        }
+      ]
+    },
+    task_vars={
+      "foo": 1,
+      "bar": 2
+    }
+  )
+
+  assert type(result) == dict
+  assert result['issues'] == [{ 'type': u'deprecated', 'path': u'foo' }]
+
 def test_lint_deprecated_with_condition():
   result = run(
     args={
