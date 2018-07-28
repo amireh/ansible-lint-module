@@ -16,15 +16,18 @@ def create_action_module(name, args=None, task_vars=None):
   play = Play.load(dict())
   play_context = PlayContext(play=play)
 
-  return LintActionModule(
+  module = LintActionModule(
     task=Task.load(data=dict(local_action=name, args=args), block=Block(play=play)),
     connection=Connection(play_context, new_stdin=False),
     play_context=play_context,
     loader=play._loader,
     templar=Templar(play._loader),
-    shared_loader_obj=None,
-    display=NullDisplay()
+    shared_loader_obj=None
   )
+
+  module.use_display(NullDisplay())
+
+  return module
 
 def create_query(task_vars):
   loader = DataLoader()

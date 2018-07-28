@@ -1,0 +1,4 @@
+#!/bin/sh
+
+./bin/shell -c './bin/lint && ./bin/unit-test-cov && ./bin/integration-test' &&
+./bin/build-doc

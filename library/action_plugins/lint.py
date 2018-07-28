@@ -16,12 +16,6 @@ from ansible.playbook.conditional import Conditional
 from ansible.plugins.action import ActionBase
 from ansible.parsing.utils.yaml import from_yaml
 
-try:
-  from __main__ import display
-except ImportError:
-  from ansible.utils.display import Display # pylint: disable=ungrouped-imports
-  display = Display()
-
 # pylint: disable=too-few-public-methods
 class ActionModule(ActionBase):
   TRANSFERS_FILES = False
@@ -51,9 +45,9 @@ class ActionModule(ActionBase):
     }
   }
 
-  def __init__(self, display=display, *args, **kwargs):
+  def __init__(self, *args, **kwargs):
     super(ActionModule, self).__init__(*args, **kwargs)
-    self._display = kwargs.get('display', display)
+    self.display = None
 
   def run(self, tmp=None, task_vars=None):
     if task_vars is None:
@@ -117,6 +111,9 @@ class ActionModule(ActionBase):
 
     return result
 
+  def use_display(self, display):
+    self.display = display
+
   # ------------------------------------------------------------------------------
   # INTERNAL
   # ------------------------------------------------------------------------------
@@ -136,7 +133,7 @@ class ActionModule(ActionBase):
 
       if items:
         report_to_display(
-          display=self._display,
+          display=self.display or get_global_display(),
           hint=rule.get('hint', None),
           hint_wrap=rule.get('hint_wrap'),
           banner=rule.get('banner') or rule_specs[rule['state']]['banner'],
@@ -437,3 +434,11 @@ def report_to_display(display, banner, banner_color, hint, hint_wrap, group_inde
     wrapped = '\n'.join(wrapper.wrap('HINT: {0}'.format(hint)))
 
     display.display('\n{0}\n'.format(wrapped), color=C.COLOR_HIGHLIGHT)
+
+def get_global_display():
+  try:
+    from __main__ import display as global_display
+    return global_display
+  except ImportError:
+    from ansible.utils.display import Display # pylint: disable=ungrouped-imports
+    return Display()
