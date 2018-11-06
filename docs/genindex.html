@@ -38,7 +38,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:'./',
-        VERSION:'2.6',
+        VERSION:'2.5',
         COLLAPSE_INDEX:false,
         FILE_SUFFIX:'.html',
         HAS_SOURCE:  false
@@ -48,10 +48,6 @@
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
 
-    
-      <link rel="search" type="application/opensearchdescription+xml"
-            title="Search within Ansible Documentation"
-            href="_static/opensearch.xml"/>
     
 
   
@@ -113,7 +109,7 @@
                 <div class="DocSiteProduct-logoText">
                     Ansible  
                     <div class="DocSiteProduct-CurrentVersion" align="right">
-                      devel
+                      2.5
                   </div>
                 </div>
             </div>
@@ -170,10 +166,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation_guide/intro_configuration.html">Configuring Ansible</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation_guide/intro_configuration.html#configuration-file">Configuration file</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="installation_guide/intro_configuration.html#getting-the-latest-configuration">Getting the latest configuration</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="installation_guide/intro_configuration.html#configuration-file">Configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation_guide/intro_configuration.html#getting-the-latest-configuration">Getting the latest configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_guide/intro_configuration.html#environmental-configuration">Environmental configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation_guide/intro_configuration.html#command-line-options">Command line options</a></li>
 </ul>
@@ -267,18 +261,6 @@
 <li class="toctree-l2"><a class="reference internal" href="porting_guides/porting_guide_2.5.html">Ansible 2.5 Porting Guide</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#playbook">Playbook</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#dynamic-includes-and-attribute-inheritance">Dynamic includes and attribute inheritance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#fixed-handling-of-keywords-and-inline-variables">Fixed handling of keywords and inline variables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#migrating-from-with-x-to-loop">Migrating from with_X to loop</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-list">with_list</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-items">with_items</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-indexed-items">with_indexed_items</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-flattened">with_flattened</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-together">with_together</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-dict">with_dict</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-sequence">with_sequence</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-subelements">with_subelements</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-nested-with-cartesian">with_nested/with_cartesian</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#with-random-choice">with_random_choice</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#deprecated">Deprecated</a><ul>
@@ -307,44 +289,6 @@
 <li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.5.html#developers-shared-module-utilities-moved">Developers: Shared Module Utilities Moved</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="porting_guides/porting_guide_2.6.html">Ansible 2.6 Porting Guide</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#playbook">Playbook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#deprecated">Deprecated</a></li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#modules">Modules</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#modules-removed">Modules removed</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#deprecation-notices">Deprecation notices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#noteworthy-module-changes">Noteworthy module changes</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#plugins">Plugins</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#id1">Deprecation notices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#noteworthy-plugin-changes">Noteworthy plugin changes</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#porting-custom-scripts">Porting custom scripts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.6.html#networking">Networking</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="porting_guides/porting_guide_2.7.html">Ansible 2.7 Porting Guide</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#playbook">Playbook</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#role-precedence-fix-during-role-loading">Role Precedence Fix during Role Loading</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#deprecated">Deprecated</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#using-a-loop-on-a-package-module-via-squash-actions">Using a loop on a package module via squash_actions</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#modules">Modules</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#modules-removed">Modules removed</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#deprecation-notices">Deprecation notices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#noteworthy-module-changes">Noteworthy module changes</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#plugins">Plugins</a></li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#porting-custom-scripts">Porting custom scripts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="porting_guides/porting_guide_2.7.html#networking">Networking</a></li>
 </ul>
 </li>
 </ul>
@@ -471,7 +415,7 @@
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_loops.html#using-register-with-a-loop">Using register with a loop</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_loops.html#looping-over-the-inventory">Looping over the inventory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_loops.html#loop-control">Loop Control</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_loops.html#migrating-from-with-x-to-loop">Migrating from with_X to loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_loops.html#loops-and-includes-in-2-0">Loops and Includes in 2.0</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="user_guide/playbooks_blocks.html">Blocks</a><ul>
@@ -494,7 +438,6 @@
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_vault.html">Using Vault in playbooks</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_startnstep.html">Start and Step</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_lookups.html">Lookups</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_module_defaults.html">Module defaults</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="user_guide/playbooks_strategies.html">Strategies</a><ul>
@@ -528,6 +471,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="user_guide/become.html#become-and-networks">Become and Networks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/become.html#network-cli-and-become">network_cli and become</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/become.html#setting-enable-mode-for-all-tasks">Setting enable mode for all tasks</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/become.html#authorize-and-auth-pass">authorize and auth_pass</a></li>
 </ul>
@@ -648,11 +592,6 @@
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#omitting-parameters">Omitting Parameters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#list-filters">List Filters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#set-theory-filters">Set Theory Filters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#dict-filter">Dict Filter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#items2dict-filter">items2dict filter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#zip-and-zip-longest-filters">zip and zip_longest filters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#subelements-filter">subelements Filter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#random-mac-address-filter">Random Mac Address Filter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#random-number-filter">Random Number Filter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#shuffle-filter">Shuffle Filter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#math">Math</a></li>
@@ -666,7 +605,7 @@
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#comment-filter">Comment Filter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#url-split-filter">URL Split Filter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#regular-expression-filters">Regular Expression Filters</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#id8">Other Useful Filters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#id6">Other Useful Filters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#combination-filters">Combination Filters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_guide/playbooks_filters.html#debugging-filters">Debugging Filters</a></li>
 </ul>
@@ -859,7 +798,6 @@
 <li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_program_flow_modules.html#normal-action-plugin">Normal Action Plugin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_program_flow_modules.html#executor-module-common-py">executor/module_common.py</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_program_flow_modules.html#special-considerations">Special Considerations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_program_flow_modules.html#ansiblemodule">AnsibleModule</a></li>
 </ul>
 </li>
 </ul>
@@ -882,19 +820,9 @@
 <li class="toctree-l3"><a class="reference internal" href="dev_guide/developing_plugins.html#distributing-plugins">Distributing Plugins</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dev_guide/developing_inventory.html">Developing Dynamic Inventory</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dev_guide/developing_inventory.html#inventory-sources">Inventory sources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dev_guide/developing_inventory.html#inventory-plugins">Inventory Plugins</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_inventory.html#developing-an-inventory-plugin">Developing an Inventory Plugin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_inventory.html#inventory-source-common-format">inventory source common format</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_inventory.html#the-auto-plugin">The ‘auto’ plugin</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="dev_guide/developing_inventory.html#developing-inventory-scripts">Inventory Scripts</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_inventory.html#inventory-script-conventions">Inventory script conventions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/developing_inventory.html#tuning-the-external-inventory-script">Tuning the External Inventory Script</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="dev_guide/developing_inventory.html">Developing Dynamic Inventory Sources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev_guide/developing_inventory.html#script-conventions">Script Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_guide/developing_inventory.html#tuning-the-external-inventory-script">Tuning the External Inventory Script</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dev_guide/developing_core.html">Developing the Ansible Core Engine</a><ul>
@@ -960,7 +888,6 @@
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#release-cycle">Release cycle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#release-status">Release status</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#development-and-stable-version-maintenance-workflow">Development and stable version maintenance workflow</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#changelogs">Changelogs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#release-candidates">Release candidates</a></li>
 <li class="toctree-l4"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#feature-freeze">Feature freeze</a></li>
 </ul>
@@ -1045,49 +972,48 @@
 <li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#highly-available">7.30. Highly available</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#hostname">7.31. Hostname</a></li>
 <li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#i-e">7.32. i.e.</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#installer">7.33. Installer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#it-s-and-its">7.34. It’s and its</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#less">7.35. Less</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#linux">7.36. Linux</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#login">7.37. Login</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#log-in">7.38. Log in</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#log-on">7.39. Log on</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#lots-of">7.40. Lots of</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#make-sure">7.41. Make sure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#manual-man-page">7.42. Manual/man page</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#mb">7.43. MB</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#mbps">7.44. MBps</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#mysql">7.45. MySQL</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#need-to">7.46. Need to</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#read-only">7.47. Read-only</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#real-time-real-time">7.48. Real time/real-time</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#refer-to">7.49. Refer to</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#see">7.50. See</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#since">7.51. Since</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#tells">7.52. Tells</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#that-which">7.53. That/which</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#then-than">7.54. Then/than</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#third-party">7.55. Third-party</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#troubleshoot">7.56. Troubleshoot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#uk">7.57. UK</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#unix">7.58. UNIX®</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#unset">7.59. Unset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#us">7.60. US</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#user">7.61. User</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#username">7.62. Username</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#view">7.63. View</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#within">7.64. Within</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#world-wide-web">7.65. World Wide Web</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#webpage">7.66. Webpage</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#web-server">7.67. Web server</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#website">7.68. Website</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#who-whom">7.69. Who/whom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#will">7.70. Will</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#wish">7.71. Wish</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#x86">7.72. x86</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#x86-64">7.73. x86_64</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#you">7.74. You</a></li>
-<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#you-may">7.75. You may</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#it-s-and-its">7.33. It’s and its</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#less">7.34. Less</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#linux">7.35. Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#login">7.36. Login</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#log-in">7.37. Log in</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#log-on">7.38. Log on</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#lots-of">7.39. Lots of</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#make-sure">7.40. Make sure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#manual-man-page">7.41. Manual/man page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#mb">7.42. MB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#mbps">7.43. MBps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#mysql">7.44. MySQL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#need-to">7.45. Need to</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#read-only">7.46. Read-only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#real-time-real-time">7.47. Real time/real-time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#refer-to">7.48. Refer to</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#see">7.49. See</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#since">7.50. Since</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#tells">7.51. Tells</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#that-which">7.52. That/which</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#then-than">7.53. Then/than</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#third-party">7.54. Third-party</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#troubleshoot">7.55. Troubleshoot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#uk">7.56. UK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#unix">7.57. UNIX®</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#unset">7.58. Unset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#us">7.59. US</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#user">7.60. User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#username">7.61. Username</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#view">7.62. View</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#within">7.63. Within</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#world-wide-web">7.64. World Wide Web</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#webpage">7.65. Webpage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#web-server">7.66. Web server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#website">7.67. Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#who-whom">7.68. Who/whom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#will">7.69. Will</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#wish">7.70. Wish</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#x86">7.71. x86</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#x86-64">7.72. x86_64</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#you">7.73. You</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev_guide/style_guide/spelling_word_choice.html#you-may">7.74. You may</a></li>
 </ul>
 </li>
 </ul>
@@ -1215,14 +1141,16 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scenario_guides/guide_gce.html">Google Cloud Platform Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scenario_guides/guide_gce.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="scenario_guides/guide_gce.html#id1">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scenario_guides/guide_gce.html#credentials">Credentials</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#providing-credentials-as-module-parameters">Providing Credentials as Module Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#providing-credentials-as-environment-variables">Providing Credentials as Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#calling-modules-by-passing-credentials">Calling Modules By Passing Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#configuring-modules-with-secrets-py">Configuring Modules with secrets.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#configuring-modules-with-environment-variables">Configuring Modules with Environment Variables</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="scenario_guides/guide_gce.html#gce-dynamic-inventory">GCE Dynamic Inventory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scenario_guides/guide_gce.html#gce-dynamic-inventory">GCE Dynamic Inventory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scenario_guides/guide_gce.html#use-cases">Use Cases</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#create-an-instance">Create an instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scenario_guides/guide_gce.html#configuring-instances-in-a-group">Configuring instances in a group</a></li>
 </ul>
 </li>
 </ul>
@@ -1291,67 +1219,6 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Ansible for VMWare</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="vmware/index.html">Ansible for VMware</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_intro.html">Introduction to Ansible for VMware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_concepts.html">Ansible for VMware Concepts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="vmware/vmware_concepts.html#concept-1">Concept 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vmware/vmware_concepts.html#concept-2">Concept 2</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_requirements.html">VMware Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_getting_started.html">Getting Started with Ansible for VMware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_scenarios.html">Ansible for VMware Scenarios</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="vmware/scenario_clone_template.html">Deploy a virtual machine from a template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_clone_template.html#introduction">Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_clone_template.html#scenario-requirements">Scenario Requirements</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_clone_template.html#assumptions">Assumptions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_clone_template.html#caveats">Caveats</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_clone_template.html#example-description">Example Description</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="vmware/scenario_rename_vm.html">Rename an existing virtual machine</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_rename_vm.html#introduction">Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_rename_vm.html#scenario-requirements">Scenario Requirements</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_rename_vm.html#caveats">Caveats</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_rename_vm.html#example-description">Example Description</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="vmware/scenario_remove_vm.html">Remove an existing VMware virtual machine</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_remove_vm.html#introduction">Introduction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_remove_vm.html#scenario-requirements">Scenario Requirements</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_remove_vm.html#caveats">Caveats</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/scenario_remove_vm.html#example-description">Example Description</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="vmware/vmware_scenario_1.html">Sample Scenario for Ansible VMware</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="vmware/vmware_scenario_1.html#scenario-requirements">Scenario Requirements</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/vmware_scenario_1.html#example-description">Example Description</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vmware/vmware_scenario_1.html#conclusion-and-where-to-go-next">Conclusion and Where To Go Next</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_module_reference.html">Ansible VMware Module Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_troubleshooting.html">Troubleshooting Ansible for VMware</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="vmware/vmware_troubleshooting.html#troubleshooting-item">Troubleshooting Item</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="vmware/vmware_troubleshooting.html#potential-workaround">Potential Workaround</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/vmware_external_doc_links.html">List of useful links to VMware</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vmware/faq.html">Ansible VMware FAQ</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="vmware/faq.html#vmware-guest">vmware_guest</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="vmware/faq.html#can-i-deploy-a-virtual-machine-on-a-standalone-esxi-server">Can I deploy a virtual machine on a standalone ESXi server ?</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 <p class="caption"><span class="caption-text">Ansible for Network Automation</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="network/index.html">Ansible for Network Automation</a><ul>
@@ -1373,7 +1240,7 @@
 <li class="toctree-l4"><a class="reference internal" href="network/getting_started/network_differences.html#execution-on-the-control-node">Execution on the Control Node</a></li>
 <li class="toctree-l4"><a class="reference internal" href="network/getting_started/network_differences.html#multiple-communication-protocols">Multiple Communication Protocols</a></li>
 <li class="toctree-l4"><a class="reference internal" href="network/getting_started/network_differences.html#modules-organized-by-network-platform">Modules Organized by Network Platform</a></li>
-<li class="toctree-l4"><a class="reference internal" href="network/getting_started/network_differences.html#privilege-escalation-enable-mode-become-and-authorize">Privilege Escalation: <code class="docutils literal"><span class="pre">enable</span></code> mode, <code class="docutils literal"><span class="pre">become</span></code>, and <code class="docutils literal"><span class="pre">authorize</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="network/getting_started/network_differences.html#privilege-escalation-authorize-and-become">Privilege Escalation: <cite>authorize</cite> and <cite>become</cite></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="network/getting_started/first_playbook.html">Run Your First Command and Playbook</a><ul>
@@ -1437,7 +1304,6 @@
 <li class="toctree-l4"><a class="reference internal" href="network/user_guide/platform_ios.html">IOS Platform Options</a></li>
 <li class="toctree-l4"><a class="reference internal" href="network/user_guide/platform_junos.html">Junos OS Platform Options</a></li>
 <li class="toctree-l4"><a class="reference internal" href="network/user_guide/platform_nxos.html">NXOS Platform Options</a></li>
-<li class="toctree-l4"><a class="reference internal" href="network/user_guide/platform_index.html#settings-by-platform">Settings by Platform</a></li>
 </ul>
 </li>
 </ul>
@@ -1539,7 +1405,6 @@
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#release-cycle">Release cycle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#release-status">Release status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#development-and-stable-version-maintenance-workflow">Development and stable version maintenance workflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#changelogs">Changelogs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#release-candidates">Release candidates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/release_and_maintenance.html#feature-freeze">Feature freeze</a></li>
 </ul>
@@ -1565,7 +1430,6 @@
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-configure-a-jump-host-to-access-servers-that-i-have-no-direct-access-to">How do I configure a jump host to access servers that I have no direct access to?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-speed-up-management-inside-ec2">How do I speed up management inside EC2?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-handle-python-not-having-a-python-interpreter-at-usr-bin-python-on-a-remote-machine">How do I handle python not having a Python interpreter at /usr/bin/python on a remote machine?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-handle-the-package-dependencies-required-by-ansible-package-dependencies-during-ansible-installation">How do I handle the package dependencies required by Ansible package dependencies during Ansible installation ?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#common-platform-issues">Common Platform Issues</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/faq.html#running-in-a-virtualenv">Running in a virtualenv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="reference_appendices/faq.html#running-on-bsd">Running on BSD</a></li>
@@ -1576,11 +1440,9 @@
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#where-does-the-configuration-file-live-and-what-can-i-configure-in-it">Where does the configuration file live and what can I configure in it?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-disable-cowsay">How do I disable cowsay?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-see-a-list-of-all-of-the-ansible-variables">How do I see a list of all of the ansible_ variables?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-see-all-the-inventory-variables-defined-for-my-host">How do I see all the inventory variables defined for my host?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-see-all-the-variables-specific-to-my-host">How do I see all the variables specific to my host?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-see-all-the-inventory-vars-defined-for-my-host">How do I see all the inventory vars defined for my host?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-loop-over-a-list-of-hosts-in-a-group-inside-of-a-template">How do I loop over a list of hosts in a group, inside of a template?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-access-a-variable-name-programmatically">How do I access a variable name programmatically?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-access-a-group-variable">How do I access a group variable?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-access-a-variable-of-the-first-host-in-a-group">How do I access a variable of the first host in a group?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-copy-files-recursively-onto-a-target-host">How do I copy files recursively onto a target host?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_appendices/faq.html#how-do-i-access-shell-environment-variables">How do I access shell environment variables?</a></li>
@@ -1671,11 +1533,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="roadmap/ROADMAP_2_5.html">Ansible 2.5</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#engine-improvements">Engine improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#ansible-content-management">Ansible Content Management</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#ansible-config">Ansible-Config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#inventory">Inventory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#facts">Facts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#pluginloader">PluginLoader</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#static-loop-keyword">Static Loop Keyword</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#vault">Vault</a></li>
+<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#role-versioning">Role Versioning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#globalize-callbacks">Globalize Callbacks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#runtime-check-on-modules-for-blacklisting">Runtime Check on Modules for Blacklisting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#windows">Windows</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#general-cloud">General Cloud</a></li>
@@ -1684,50 +1550,6 @@
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#network-roadmap">Network Roadmap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#documentation">Documentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_5.html#contributor-quality-of-life">Contributor Quality of Life</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="roadmap/ROADMAP_2_6.html">Ansible 2.6</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#release-schedule">Release Schedule</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#actual">Actual</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#expected">Expected</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#engine-improvements">Engine improvements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#core-modules">Core Modules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#cloud-modules">Cloud Modules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#network">Network</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#connection-work">Connection work</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#modules">Modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#other-features">Other Features</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_6.html#windows">Windows</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="roadmap/ROADMAP_2_7.html">Ansible 2.7</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#release-schedule">Release Schedule</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#expected">Expected</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#cleaning-duty">Cleaning Duty</a></li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#engine-improvements">Engine Improvements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#core-modules">Core Modules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#cloud-modules">Cloud Modules</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#general">General</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#aws">AWS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#azure">Azure</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#network">Network</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#id1">General</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#modules">Modules</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#windows">Windows</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#id2">General</a></li>
-<li class="toctree-l4"><a class="reference internal" href="roadmap/ROADMAP_2_7.html#id3">Modules</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -2155,7 +1977,7 @@
   _st('install','yABGvz2N8PwcwBxyfzUc','2.0.0');
 </script>
 
-  <p>Last updated on Jul 28, 2018.<br/>
+  <p>Last updated on Nov 06, 2018.<br/>
   Copyright © 2018 Red Hat, Inc. <br/>
   </p>
 </footer>
@@ -2173,7 +1995,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.6',
+            VERSION:'2.5',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

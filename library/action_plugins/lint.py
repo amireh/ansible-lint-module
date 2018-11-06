@@ -60,6 +60,7 @@ class ActionModule(ActionBase):
           [ 'rules_file', 'rules' ],
         ],
         options=dict(
+          pool = dict(type='list', default=[], elements='dict'),
           rules_file = dict(type='path', default=None),
           rules = dict(
             type='list',
@@ -99,7 +100,12 @@ class ActionModule(ActionBase):
         find_needle=self._find_needle
       ).load_file(self._task.args['rules_file'])
 
-    issues = self._identify_issues(rules, task_vars)
+    var_pool, var_pool_error = self._collect_vars(task_vars)
+
+    if var_pool_error:
+      return var_pool_error
+
+    issues = self._identify_issues(rules, var_pool)
 
     result['rule_count'] = len(rules)
     result['issues'] = sorted(issues, key=lambda x: x['path'])
@@ -172,6 +178,28 @@ class ActionModule(ActionBase):
   # pylint: disable=unused-argument
   def _identify_suspicious(self, rule, query):
     return query.where(rule['when'])
+
+  def _collect_vars(self, task_vars):
+    if self._task.args['pool']:
+      pool = {}
+
+      for var in self._task.args['pool']:
+        if isinstance(var, basestring):
+          pool.update(task_vars[var])
+        elif isinstance(var, dict):
+          pool.update(var)
+        else:
+          return None, {
+            "failed": True,
+            "msg": (
+              "Unrecognized pool variable type: expected a dict or " +
+              "a string but got \"{}\".".format(type(var))
+            )
+          }
+
+      return pool, None
+    else:
+      return task_vars, None
 
 # ------------------------------------------------------------------------------
 # INTERNAL
@@ -375,6 +403,9 @@ def merge(a, b):
 
 def omit(keys, target):
   return { x: target[x] for x in target if x not in keys }
+
+def pick(keys, target):
+  return { x: target[x] for x in target if x in keys }
 
 def flatten(lists):
   memo = []

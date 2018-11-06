@@ -27,6 +27,11 @@ description:
     assigned an invalid value.
 
 options:
+  pool:
+    description:
+      - A custom pool of variables to operate on as opposed to the pool
+        all defined variables.
+      - List of dicts.
   rules_file:
     description:
       - YAML file containing the rules to use.
@@ -128,6 +133,21 @@ EXAMPLES = '''
         when: captures[1] not in [ 'address', 'port' ]
         banner: 'The following properties are not recognized:'
         hint: 'please check for typos'
+
+- name: load user settings
+  include_vars:
+    file: user_settings.yml
+    name: user_setting_pool
+  when: user_settings.yml is file
+
+- name: validate user settings
+  lint:
+    pool:
+      - "{{ user_setting_pool }}"
+      - additional_var: 1
+    rules:
+      - state: deprecated
+        path: foo
 '''
 
 RETURN = '''

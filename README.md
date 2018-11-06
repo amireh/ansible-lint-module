@@ -53,6 +53,13 @@ bin/integration-test
 
 Build the documentation with `./bin/build-doc`.
 
+## History
+
+### 1.1
+
+- added new option `pool` to refine the set of variables to lint
+
+
 ## License
 
 Copyright: (c) 2018 Ahmad Amireh <ahmad@instructure.com>

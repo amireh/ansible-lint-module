@@ -10,6 +10,38 @@ from ansible.parsing.dataloader import DataLoader
 def run(args=None, task_vars=None):
   return create_action_module('lint', args, task_vars).run(None, task_vars=task_vars)
 
+def test_pool():
+  result = run(
+    args={
+      "rules": [
+        {
+          "state": u"deprecated",
+          "path": u"foo",
+        },
+        {
+          "state": u"deprecated",
+          "path": u"a",
+        }
+      ],
+      "pool": [
+        {
+          "foo": 1
+        },
+        "ref"
+      ]
+    },
+    task_vars={
+      "bar": 1,
+      "ref": {
+        "a": 1
+      }
+    }
+  )
+
+  assert type(result) == dict
+  assert not result['failed']
+  assert len(result['issues']) == 2
+
 def test_lint_deprecated():
   result = run(
     args={
