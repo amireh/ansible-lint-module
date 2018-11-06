@@ -33,6 +33,7 @@ def create_query(task_vars):
   loader = DataLoader()
 
   return Query(
+    target_vars=task_vars,
     task_vars=task_vars,
     loader=loader,
     templar=Templar(loader),

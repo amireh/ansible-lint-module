@@ -100,12 +100,12 @@ class ActionModule(ActionBase):
         find_needle=self._find_needle
       ).load_file(self._task.args['rules_file'])
 
-    var_pool, var_pool_error = self._collect_vars(task_vars)
+    target_vars, target_vars_error = self._collect_target_vars(task_vars)
 
-    if var_pool_error:
-      return var_pool_error
+    if target_vars_error:
+      return target_vars_error
 
-    issues = self._identify_issues(rules, var_pool)
+    issues = self._identify_issues(rules, target_vars, task_vars)
 
     result['rule_count'] = len(rules)
     result['issues'] = sorted(issues, key=lambda x: x['path'])
@@ -124,12 +124,12 @@ class ActionModule(ActionBase):
   # INTERNAL
   # ------------------------------------------------------------------------------
 
-  def _identify_issues(self, rules, task_vars):
+  def _identify_issues(self, rules, target_vars, task_vars):
     rule_specs = self.RULE_SPECS
     issues = []
 
     for rule_index, rule in enumerate(rules):
-      query = Query(task_vars, self._loader, self._templar)
+      query = Query(target_vars, task_vars, self._loader, self._templar)
       query = query.select(rule['path'])
       query = getattr(self, '_identify_%s' % rule['state'])(rule, query)
 
@@ -179,7 +179,7 @@ class ActionModule(ActionBase):
   def _identify_suspicious(self, rule, query):
     return query.where(rule['when'])
 
-  def _collect_vars(self, task_vars):
+  def _collect_target_vars(self, task_vars):
     if self._task.args['pool']:
       pool = {}
 
@@ -247,7 +247,8 @@ class YAMLFileLoader():
 
 # A somewhat declarative interface for selecting variables
 class Query():
-  def __init__(self, task_vars, loader, templar):
+  def __init__(self, target_vars, task_vars, loader, templar):
+    self._target_vars = target_vars
     self._task_vars = task_vars.copy()
     self._loader = loader
     self._templar = templar
@@ -292,7 +293,7 @@ class Query():
   #     ]
   #
   def select(self, selector):
-    return self._chain(lambda _: over(selector, self._task_vars))
+    return self._chain(lambda _: over(selector, self._target_vars))
 
   # (str): Query
   #
