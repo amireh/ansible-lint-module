@@ -7,6 +7,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type # pylint: disable=invalid-name
 
+from six import string_types
 from textwrap import TextWrapper
 from ansible import constants as C
 from ansible.errors import AnsibleAction, AnsibleActionFail, AnsibleError, AnsibleFileNotFound, AnsibleOptionsError
@@ -184,7 +185,7 @@ class ActionModule(ActionBase):
       pool = {}
 
       for var in self._task.args['pool']:
-        if isinstance(var, basestring):
+        if isinstance(var, string_types):
           pool.update(task_vars[var])
         elif isinstance(var, dict):
           pool.update(var)
